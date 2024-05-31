@@ -1,0 +1,22 @@
+name: PR open/sync
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  publish:
+    name: Publish docs to AWS
+    runs-on: ubuntu-22.04
+    permissions:
+      deployments: write
+    steps:
+      - name: start deployment
+        uses: bobheadxi/deployments@v1
+        id: docs
+        with:
+          step: start
+          env: docss
