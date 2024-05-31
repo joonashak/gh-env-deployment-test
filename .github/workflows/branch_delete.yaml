@@ -1,0 +1,18 @@
+name: Delete branch documentation
+
+on: delete
+
+jobs:
+  delete-docs:
+    name: Delete documentation
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-22.04
+    permissions:
+      deployments: write
+    steps:
+      - name: Deactivate deployment
+        uses: bobheadxi/deployments@v1
+        with:
+          step: deactivate-env
+          env: branch-${{ github.event.ref }}
+          desc: Environment was pruned
