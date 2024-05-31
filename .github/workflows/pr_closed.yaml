@@ -1,0 +1,20 @@
+name: PR closed
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  remove:
+    name: Remove
+    runs-on: ubuntu-22.04
+    permissions:
+      deployments: write
+    steps:
+      - name: mark environment as deactivated
+        uses: bobheadxi/deployments@v1
+        with:
+          step: deactivate-env
+          env: pr-${{ github.event.number }}
+          desc: Environment was pruned
