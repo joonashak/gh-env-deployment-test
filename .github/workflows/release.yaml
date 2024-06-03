@@ -15,11 +15,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Parse version number
+        id: parse-version
         run: echo "VERSION=$(npm pkg get version | tr -d '\"')" >> "$GITHUB_ENV"
       - name: Edit Release
         uses: irongut/editrelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ github.event.release.id }}
-          body: "**Documentation:** [Storybook](https://example.com/${VERSION})"
+          body: "**Documentation:** [Storybook](https://example.com/${{ steps.parse-version.outputs.VERSION }})"
           spacing: 2
