@@ -1,0 +1,27 @@
+name: Publish documentation for release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  publish:
+    name: Publish docs to AWS
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ngx-fudis
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: release.tag_name
+        run: echo ${{ github.event.release.tag_name }}
+      - name: npm version
+        run: npm pkg get version | tr -d '"'
+      - name: Edit Release
+        uses: irongut/EditRelease@v1.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          id: ${{ github.event.release.id }}
+          body: "**Documentation:** [Storybook](https://example.com)"
