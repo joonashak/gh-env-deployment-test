@@ -16,12 +16,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Parse version number
         id: parse-version
-        run: |
-          VERSION=$(npm pkg get version | tr -d '"')
-          echo "::set-output name=version::$VERSION"
+        run: export VERSION=$(npm pkg get version | tr -d '"')
       - name: Edit Release
         uses: irongut/EditRelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ github.event.release.id }}
-          body: "**Documentation:** [Storybook](https://example.com${{ steps.parse-version.outputs.version }})"
+          body: "**Documentation:** [Storybook](https://example.com/${{ steps.parse-version.outputs.VERSION }})"
+          spacing: 2
