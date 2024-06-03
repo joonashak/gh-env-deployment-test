@@ -9,19 +9,19 @@ jobs:
   publish:
     name: Publish docs to AWS
     runs-on: ubuntu-22.04
-    defaults:
-      run:
-        working-directory: ngx-fudis
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: release.tag_name
-        run: echo ${{ github.event.release.tag_name }}
-      - name: npm version
-        run: npm pkg get version | tr -d '"'
+      - name: Parse version number
+        id: parse-version
+        run: |
+          VERSION=$(npm pkg get version | tr -d '"')
+          echo "::set-output name=version::$VERSION"
       - name: Edit Release
         uses: irongut/EditRelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ github.event.release.id }}
-          body: "**Documentation:** [Storybook](https://example.com)"
+          body: "**Documentation:** [Storybook](https://example.com${{ steps.parse-version.outputs.version }})"
