@@ -1,6 +1,6 @@
 {
   "name": "gh-env-deployment-test",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Testing GH Actions and deployments",
   "main": "index.js",
   "scripts": {

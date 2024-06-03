@@ -22,5 +22,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ github.event.release.id }}
-          body: "**Documentation:** [Storybook](https://example.com/${{ steps.parse-version.outputs.VERSION }})"
+          body: "**Documentation:** [Storybook](https://example.com/${{ github.env.VERSION }})"
           spacing: 2
