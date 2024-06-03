@@ -3,7 +3,8 @@ name: Publish documentation for release
 on:
   release:
     types:
-      - published
+      - released
+      - prereleased
 
 jobs:
   publish:
@@ -14,13 +15,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Parse version number
-        id: parse-version
+      - name: Parse library version number
         run: echo "VERSION=$(npm pkg get version | tr -d '\"')" >> "$GITHUB_ENV"
+      - name: Use version in bash
+        run: echo $VERSION
+      # Saving in a file appears to be the only way to read from env vars when using irongut/editrelease...
+      - name: Generate docs link for release notes
+        run: echo "**Documentation:** [Storybook](https://example.com/${VERSION})" >> release_notes_annex
       - name: Edit Release
         uses: irongut/editrelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ github.event.release.id }}
-          body: "**Documentation:** [Storybook](https://example.com/${{ github.env.VERSION }})"
+          files: release_notes_annex
           spacing: 2
